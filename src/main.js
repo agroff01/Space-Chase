@@ -1,11 +1,11 @@
 let config = {
-    type: Phaser,
-    width: 800,
-    height: 500,
-    scene: [Load, Play]
+    type: Phaser.CANVAS,
+    width: 1200,
+    height: 800,
+    scene: [Load, Menu, Play]
 }
 
 let game = new Phaser.Game(config);
 
 // keyboard variables
-let keyUP, keyDown;
+let keyUP, keyDOWN, key1, key2;

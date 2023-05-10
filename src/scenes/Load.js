@@ -10,23 +10,20 @@ class Load extends Phaser.Scene {
         this.load.on('progress', (value) => {
             loadingBar.clear();                                 // reset fill/line style
             loadingBar.fillStyle(0xFFFFFF, 1);                  // (color, alpha)
-            loadingBar.fillRect(0, centerY, w * value, 5);  // (x, y, w, h)
+            loadingBar.fillRect(0, game.config.height/2, game.config.width * value, 10);  // (x, y, w, h)
         });
         this.load.on('complete', () => {
             loadingBar.destroy();
         });
 
         this.load.path = './assets/';
-        // load graphics assets
-        this.load.image('paddle', 'img/paddle.png');
-        this.load.image('fragment', 'img/fragment.png');
-        this.load.image('cross', 'img/white_cross.png');
-        // load audio assets
-        this.load.audio('beats', ['audio/beats.mp3']);
-        this.load.audio('clang', ['audio/clang.mp3']);
-        this.load.audio('death', ['audio/death.mp3']);
+        //load images
+        this.load.image('starfield', 'starfield.png');
+        this.load.image('starfieldParalax1', 'starfield2.png');
+        this.load.image('starfieldParalax2', 'starfield3.png');
+        this.load.image('starSpeeder', 'starSpeeder.png');
         // load font
-        this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml');
+        //this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml');
     }
 
     create() {
@@ -38,6 +35,6 @@ class Load extends Phaser.Scene {
         }
 
         // go to Title scene
-        this.scene.start('titleScene');
+        this.scene.start('menuScene');
     }
 }
