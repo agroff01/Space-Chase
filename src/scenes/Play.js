@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
 
         //background
         this.starfield = this.add.tileSprite(0,0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.starfield.tilePositionY += 10;
         this.starfieldParalax1 = this.add.tileSprite(0,0, 640, 480, 'starfieldParalax1').setOrigin(0, 0);
         this.starfieldParalax1.tilePositionY += 100;
         this.starfieldParalax2 = this.add.tileSprite(0,0, 640, 480, 'starfieldParalax2').setOrigin(0, 0);
@@ -32,7 +33,12 @@ class Play extends Phaser.Scene {
 
        
         this.timeAlive = 0;
-        this.gameSpeed = 20
+        this.gameSpeed = 0;
+        this.difficulty = 1;
+        this.speedRamp = .3;
+        this.delayedRamp = this.time.delayedCall(2000, () => {
+            this.speedRamp = 0;
+        }, null, this);
 
         // Player Input
         cursors = this.input.keyboard.createCursorKeys();
@@ -57,8 +63,9 @@ class Play extends Phaser.Scene {
         this.timeAlive += .1;
         this.distanceText.text = Phaser.Math.FloorTo(this.timeAlive);
         this.pShip.update();
-        this.gameSpeed += .001;
+        this.gameSpeed += .005 + this.speedRamp;
 
+        this.starfield.tilePositionX += this.gameSpeed *.1;
         this.starfieldParalax1.tilePositionX += this.gameSpeed + 1;
         this.starfieldParalax2.tilePositionX += this.gameSpeed + 4;
         this.starfieldParalax2.alpha = this.gameSpeed*.03;
