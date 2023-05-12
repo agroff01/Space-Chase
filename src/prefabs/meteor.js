@@ -10,8 +10,11 @@ class Meteor extends Phaser.Physics.Arcade.Sprite {
     // }
 
     constructor(scene, velocity) {
+
+        let meteorAssets = ['meteor1', 'meteor2', 'meteor3', 'meteor4'];
+        let meteorName = meteorAssets[Math.floor(Math.random()* meteorAssets.length)];
         // call Phaser Physics Sprite constructor
-        super(scene, game.config.width + 40, Phaser.Math.Between(50/2, game.config.height - 50/2), 'meteor2'); 
+        super(scene, game.config.width + 40, Phaser.Math.Between(0, game.config.height), meteorName); 
         
         this.parentScene = scene;               // maintain scene context
 
@@ -20,11 +23,15 @@ class Meteor extends Phaser.Physics.Arcade.Sprite {
         this.parentScene.physics.add.existing(this);    // add to physics system
         this.setVelocityX(velocity);            // make it go!
         this.setImmovable();
-        let meteorColors = [0xCC3367, 0xB3CC33, 0x33CC98, 0x4C33CC];
+        let meteorColors = [0xCCCC67, 0xB3CCCC, 0xCCCC98, 0x4CCCCC, 0xFFFFFF];
         this.tint = meteorColors[Math.floor(Math.random()* meteorColors.length)];
+        this.angle = Math.random() * 360;
+        this.rotateSpeed = (Math.random() * 4) - 2;
     }
 
     update() {
+
+        this.angle += this.rotateSpeed;
 
         // destroy paddle if it reaches the left edge of the screen
         if(this.x < 30) {

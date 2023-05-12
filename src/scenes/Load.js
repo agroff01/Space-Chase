@@ -19,12 +19,14 @@ class Load extends Phaser.Scene {
         this.load.path = './assets/';
         //load images
         this.load.image('starfield', 'starfield.png');
+        this.load.image('blueB', 'blueBackground.png');
         this.load.image('starfieldParalax1', 'starfield2.png');
         this.load.image('starfieldParalax2', 'starfield3.png');
         this.load.image('starSpeeder', 'starSpeeder.png');
         this.load.image('meteor1', 'Meteor1.png');
         this.load.image('meteor2', 'Meteor2.png');
         this.load.image('meteor3', 'Meteor3.png');
+        this.load.image('meteor4', 'Meteor4.png');
 
         // load font
         //this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml');
