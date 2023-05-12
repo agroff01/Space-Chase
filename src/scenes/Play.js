@@ -31,15 +31,10 @@ class Play extends Phaser.Scene {
         this.rockGroup = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
         });
-        this.rockObject = this.physics.add.sprite(game.config.width, game.config.height/2, "meteor3").setOrigin(.5);
-        this.rockObject2 = this.physics.add.sprite(game.config.width, game.config.height/2, "meteor3").setOrigin(.5);
 
-        this.rockGroup.add(this.rockObject);
-        this.rockGroup.add(this.rockObject2);
-        let meteorColors = [0xCC3367, 0xB3CC33, 0x33CC98, 0x4C33CC];
-        this.rockObject.tint = meteorColors[Math.floor(Math.random()* meteorColors.length)];
-        this.rockObject.setAccelerationX(-50);
-        this.rockObject2.setAccelerationX(-20);
+
+        //rock spawner
+        this.rockSpawnDelay = this.time.addEvent({ delay: 1000, callback: () => {this.addMeteor();}, callbackScope: this, loop: true });
 
 
        
@@ -47,9 +42,9 @@ class Play extends Phaser.Scene {
         this.gameSpeed = 0;
         this.difficulty = 1;
         this.speedRamp = .3;
-        // this.delayedRamp = this.time.delayedCall(2000, () => {
-        //     this.speedRamp = 0;
-        // }, null, this);
+        this.delayedRamp = this.time.delayedCall(2000, () => {
+            this.speedRamp = 0;
+        }, null, this);
 
         // Player Input
         cursors = this.input.keyboard.createCursorKeys();
@@ -74,6 +69,7 @@ class Play extends Phaser.Scene {
         this.distanceText.text = Phaser.Math.FloorTo(this.timeAlive);
         this.pShip.update();
         this.gameSpeed += .005 + this.speedRamp;
+        if (this.timeAlive > 250) this.rockSpawnDelay.timeScale = this.timeAlive / 250;
 
         this.starfield.tilePositionX += this.gameSpeed *.1;
         this.starfieldParalax1.tilePositionX += this.gameSpeed + 1;
@@ -98,22 +94,31 @@ class Play extends Phaser.Scene {
         if (this.pShip.x < this.game.config.width/4) this.pShip.x = game.config.width/4;
         this.direction.normalize();
 
-        if (!this.shipDamaged) this.physics.add.collider(this.pShip, this.rockGroup, null, this.shipCollision, this);
+        // if ship is hit
+        if (this.shipDamaged) this.pShip.alpha = this.shipInvulnerable.elapsed % 1;
+        this.physics.add.collider(this.pShip, this.rockGroup, null, this.shipCollision, this);
 
-        if (this.shipDamaged)  this.pShip.alpha = this.shipInvulnerable.elapsed % 1;
 
+        
     }
 
     shipCollision(object1, object2) { 
-        object1.x -= 100;
-        this.shipDamaged = true;
-        this.shipInvulnerable = this.time.delayedCall(3000, () => {
-            this.shipDamaged = false;
-            object1.alpha = 1;
-        }, null, this);
+        if (!this.shipDamaged){
+            object1.x -= 100;
+            this.shipDamaged = true;
+            this.shipInvulnerable = this.time.delayedCall(3000, () => {
+                this.shipDamaged = false;
+                object1.alpha = 1;
+            }, null, this);
+        }
+        object2.destroy()        
+    }
 
-        object2.destroy()
-        console.log("Ship is object 1");
+    addMeteor(){
+        console.log("created");
+        let tempMeteor = new Meteor(this, 40);
+        this.rockGroup.add(tempMeteor);
+        tempMeteor.setAccelerationX(-50 * Math.log(10+ this.timeAlive/100));
     }
 }
 
