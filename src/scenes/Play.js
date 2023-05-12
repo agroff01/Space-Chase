@@ -6,8 +6,9 @@ class Play extends Phaser.Scene {
     create() {
 
         //background
-        this.starfield = this.add.tileSprite(0,0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.starfield = this.add.tileSprite(0,0, game.config.width, game.config.height, 'blueB').setOrigin(0, 0);
         this.starfield.tilePositionY += 10;
+        this.starfield.alpha = .7;
         this.starfieldParalax1 = this.add.tileSprite(0,0, 640, 480, 'starfieldParalax1').setOrigin(0, 0);
         this.starfieldParalax1.tilePositionY += 100;
         this.starfieldParalax2 = this.add.tileSprite(0,0, 640, 480, 'starfieldParalax2').setOrigin(0, 0);
@@ -26,6 +27,8 @@ class Play extends Phaser.Scene {
         this.pShip.setBounceY(.55);
         this.pShip.setDrag(500);
         this.SHIP_VELOCITY = 50;
+
+        this.shipLife = 3;
 
         // Asteroid belt objects
         this.rockGroup = this.add.group({
@@ -62,6 +65,8 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
         this.distanceText = this.add.text(game.config.width/2, game.config.height/2 - 200, this.timeAlive, menuConfig).setOrigin(0.5);
+
+        this.livesLeft = this.add.text(50, 20, "Lives Left: " + this.shipLife, menuConfig).setOrigin(0);
     }
 
     update() {
@@ -98,13 +103,31 @@ class Play extends Phaser.Scene {
         if (this.shipDamaged) this.pShip.alpha = this.shipInvulnerable.elapsed % 1;
         this.physics.add.collider(this.pShip, this.rockGroup, null, this.shipCollision, this);
 
-
+        // // Check for Failure
+        // if (this.shipLife < 0){
+        //     this.distanceText.destroy();
+        //     this.livesLeft.destroy();
+        //     let textureManager = this.textures;
+            
+        //     // the image is automatically passed to the callback
+        //     this.game.renderer.snapshot((snapshotImage) => {
+        //         if(textureManager.exists('titlesnapshot')) {
+        //             textureManager.remove('titlesnapshot');
+        //         }
+        //         textureManager.addImage('titlesnapshot', snapshotImage);
+        //     });
+            
+        //     // start next scene
+        //     this.scene.start('gameOver');
+        // }
         
     }
 
     shipCollision(object1, object2) { 
         if (!this.shipDamaged){
-            object1.x -= 100;
+            object1.x -= 20;
+            this.shipLife--;
+            this.livesLeft.text = "Lives Left: " + this.shipLife;
             this.shipDamaged = true;
             this.shipInvulnerable = this.time.delayedCall(3000, () => {
                 this.shipDamaged = false;
@@ -118,7 +141,7 @@ class Play extends Phaser.Scene {
         console.log("created");
         let tempMeteor = new Meteor(this, 40);
         this.rockGroup.add(tempMeteor);
-        tempMeteor.setAccelerationX(-50 * Math.log(10+ this.timeAlive/100));
+        tempMeteor.setAccelerationX(-50 * Math.log(10+ this.timeAlive/100) * (.5 + (Math.random()*1.5)));
     }
 }
 
