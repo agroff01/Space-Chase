@@ -9,9 +9,9 @@ class Play extends Phaser.Scene {
         this.starfield = this.add.tileSprite(0,0, game.config.width, game.config.height, 'blueB').setOrigin(0, 0);
         this.starfield.tilePositionY += 10;
         this.starfield.alpha = .7;
-        this.starfieldParalax1 = this.add.tileSprite(0,0, 640, 480, 'starfieldParalax1').setOrigin(0, 0);
+        this.starfieldParalax1 = this.add.tileSprite(0,0, game.config.width, game.config.height, 'starfieldParalax1').setOrigin(0, 0);
         this.starfieldParalax1.tilePositionY += 100;
-        this.starfieldParalax2 = this.add.tileSprite(0,0, 640, 480, 'starfieldParalax2').setOrigin(0, 0);
+        this.starfieldParalax2 = this.add.tileSprite(0,0, game.config.width, game.config.height, 'starfieldParalax2').setOrigin(0, 0);
         this.starfieldParalax2.tilePositionY += 400;
         this.starfieldParalax2.alpha = .3;
        
@@ -26,9 +26,10 @@ class Play extends Phaser.Scene {
         this.pShip.setDepth(10);
         this.pShip.setBounceY(.55);
         this.pShip.setDrag(500);
+        this.shipDamaged = false;
         this.SHIP_VELOCITY = 50;
 
-        this.shipLife = 3;
+        this.shipLife = 1;
 
         // Asteroid belt objects
         this.rockGroup = this.add.group({
@@ -99,33 +100,27 @@ class Play extends Phaser.Scene {
         if (this.pShip.x < this.game.config.width/4) this.pShip.x = game.config.width/4;
         this.direction.normalize();
 
+        // Check for Failure
+        if (this.shipLife < 0){
+            this.distanceText.destroy();
+            this.livesLeft.destroy();
+            
+            // start next scene
+            this.scene.start('gameOver');
+        }
+
         // if ship is hit
         if (this.shipDamaged) this.pShip.alpha = this.shipInvulnerable.elapsed % 1;
         this.physics.add.collider(this.pShip, this.rockGroup, null, this.shipCollision, this);
 
-        // // Check for Failure
-        // if (this.shipLife < 0){
-        //     this.distanceText.destroy();
-        //     this.livesLeft.destroy();
-        //     let textureManager = this.textures;
-            
-        //     // the image is automatically passed to the callback
-        //     this.game.renderer.snapshot((snapshotImage) => {
-        //         if(textureManager.exists('titlesnapshot')) {
-        //             textureManager.remove('titlesnapshot');
-        //         }
-        //         textureManager.addImage('titlesnapshot', snapshotImage);
-        //     });
-            
-        //     // start next scene
-        //     this.scene.start('gameOver');
-        // }
+        
         
     }
 
     shipCollision(object1, object2) { 
+        
         if (!this.shipDamaged){
-            object1.x -= 20;
+            object1.x -= 30;
             this.shipLife--;
             this.livesLeft.text = "Lives Left: " + this.shipLife;
             this.shipDamaged = true;
