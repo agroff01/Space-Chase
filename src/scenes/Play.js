@@ -60,9 +60,9 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
         this.cruzers.add(new Police(this, 5, 50).setOrigin(0, .5));
-        this.cruzers.add(new Police(this, 5, game.config.height/2 - 90).setOrigin(0, .5));
+        this.cruzers.add(new Police(this, 5, game.config.height/2 - 100).setOrigin(0, .5));
         this.cruzers.add(new Police(this, 5, game.config.height/2).setOrigin(0, .5));
-        this.cruzers.add(new Police(this, 5, game.config.height/2 + 90).setOrigin(0, .5));
+        this.cruzers.add(new Police(this, 5, game.config.height/2 + 100).setOrigin(0, .5));
         this.cruzers.add(new Police(this, 5, game.config.height - 50).setOrigin(0, .5));
 
 
@@ -105,14 +105,14 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        this.distanceText = this.add.text(game.config.width/2, game.config.height/2 - 200, this.timeAlive, textUIConfig).setOrigin(0.5);
+        this.distanceText = this.add.text(game.config.width/2, game.config.height/2 - 200, this.timeAlive + "Lu", textUIConfig).setOrigin(0.5 );
 
-        this.livesLeft = this.add.text(50, 20, "Lives Left: " + this.shipLife, textUIConfig).setOrigin(0);
+        this.livesLeft = this.add.text(game.config.width - 300, 20, "Lives Left: " + this.shipLife, textUIConfig).setOrigin(0);
     }
 
     update() {
         this.timeAlive += .1;
-        this.distanceText.text = Phaser.Math.FloorTo(this.timeAlive);
+        this.distanceText.text = Phaser.Math.FloorTo(this.timeAlive) + " Lu";
         this.pShip.update();
         this.gameSpeed += .005 + this.speedRamp;
         if (this.timeAlive > 250) this.rockSpawnDelay.timeScale = this.timeAlive / 250;
@@ -121,7 +121,6 @@ class Play extends Phaser.Scene {
         this.starfieldParalax1.tilePositionX += this.gameSpeed + 1;
         this.starfieldParalax2.tilePositionX += this.gameSpeed/3 + 4;
         this.starfieldParalax2.alpha += this.speedRamp/2;
-
 
         // player input
         this.direction = new Phaser.Math.Vector2(0);
@@ -135,7 +134,7 @@ class Play extends Phaser.Scene {
         } else if(cursors.right.isDown) {
             this.pShip.body.velocity.x += (this.SHIP_VELOCITY);
         }
-        if (this.pShip.x > this.game.config.width/2) this.pShip.x = game.config.width/2;
+        if (this.pShip.x > 625) this.pShip.x = 625;
         if (this.pShip.x < this.game.config.width/4) this.pShip.x = game.config.width/4;
         this.direction.normalize();
 
