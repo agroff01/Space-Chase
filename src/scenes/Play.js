@@ -12,7 +12,6 @@ class Play extends Phaser.Scene {
         this.starfieldParalax2.tilePositionY += 400;
         this.starfieldParalax2.alpha = .3;
         this.starfield = this.add.tileSprite(0,0, game.config.width, game.config.height, 'blueB').setOrigin(0, 0);
-        this.starfield.tilePositionY += 10;
         this.starfield.alpha = .7;
        
         //player ship setup
@@ -30,7 +29,7 @@ class Play extends Phaser.Scene {
         this.pShip.body.onOverlap = true;
         this.SHIP_VELOCITY = 50;
 
-        this.shipLife = 3;
+        this.shipLife = 2;
         
 
         // create animations
@@ -164,7 +163,7 @@ class Play extends Phaser.Scene {
         if (!this.shipDamaged){
             object1.x -= 30;
             this.shipLife--;
-            this.livesLeft.text = "Lives Left: " + this.shipLife;
+            this.livesLeft.text = "Shields Left: " + this.shipLife;
             this.shipDamaged = true;
             this.shipInvulnerable = this.time.delayedCall(3000, () => {
                 this.shipDamaged = false;
