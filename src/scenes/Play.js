@@ -107,7 +107,7 @@ class Play extends Phaser.Scene {
         }
         this.distanceText = this.add.text(game.config.width/2, game.config.height/2 - 200, this.timeAlive + "Lu", textUIConfig).setOrigin(0.5 );
 
-        this.livesLeft = this.add.text(game.config.width - 300, 20, "Lives Left: " + this.shipLife, textUIConfig).setOrigin(0);
+        this.livesLeft = this.add.text(game.config.width - 300, 20, "Shields Left: " + this.shipLife, textUIConfig).setOrigin(0);
     }
 
     update() {

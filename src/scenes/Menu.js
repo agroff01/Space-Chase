@@ -1,6 +1,6 @@
 class Menu extends Phaser.Scene {
     constructor() {
-        super("menuScene");
+        super("mainMenu");
     }
 
     create() {
@@ -26,24 +26,26 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2 + 50, 'Press UP to Begin', menuConfig).setOrigin(0.5);
 
         // define keys
-        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        cursors = this.input.keyboard.createCursorKeys();
 
-        // set up audio
-        this.music = this.sound.add('music', { 
+        
+        this.sound.play('music', { 
             mute: false,
             volume: .4,
             rate: 1,
             loop: true 
-        });
-        this.music.play();
-        
+        });        
                 
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyUP)) {    
+        if (Phaser.Input.Keyboard.JustDown(cursors.up)) {    
             this.sound.play('confirm', { volume: 0.5 });
             this.scene.start('playScene');    
+        }
+        if (cursors.down.isDown) {
+            this.sound.play('confirm', { volume: 0.7 });     
+            this.scene.start('credits');
         }
     }
 
