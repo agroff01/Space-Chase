@@ -1,51 +1,47 @@
 class Police extends Phaser.Physics.Arcade.Sprite {
    
-    constructor(scene, x, y) {
+    constructor(scene, x, y, randomNumber = Math.random()) {
 
-        let idleFrameList = scene.anims.generateFrameNames('police', {
-            prefix: 'Police Cruzer',
-            start: 1,
-            end: 21
-        })
-
-        // create animations
-        scene.anims.create({
-            key: 'idle',
-            frames: idleFrameList,
-            repeat: -1,
-            frameRate: 8
-        });
-        scene.anims.create({
-            key: 'lazer',
-            frames: scene.anims.generateFrameNames('police', {
-                prefix: 'PoliceCruzerFire',
-                start: 1,
-                end: 19
-            }),
-            frameRate: 15
-        });
+        
 
         // call Phaser Physics Sprite constructor
         super(scene, x, y, 'police', 'Police Cruzer1'); 
-        this.play('idle', true);
+
+        // reference for current scene
+        this.myScene = scene;
+
+        // randomize idle swaying
+        
+        this.playAfterDelay('idle', Math.floor(randomNumber * 6000));
+        
 
         
-        this.parentScene = scene;               // maintain scene context
 
         // set up physics sprite
-        this.parentScene.add.existing(this);    // add to existing scene, displayList, updateList
-        this.parentScene.physics.add.existing(this);    // add to physics system
+        this.myScene.add.existing(this);    // add to existing this.myScene, displayList, updateList
+        this.myScene.physics.add.existing(this);    // add to physics system
         this.setImmovable();
+        this.body.onOverlap = true;
+
+        this.isFiring = false;
+
         
     }
 
-    update() {
 
-        this.angle += this.rotateSpeed;
+    fireLazer(){
+        this.play('fire', true);
 
-        // destroy paddle if it reaches the left edge of the screen
-        if(this.x < 30) {
-            this.destroy();
-        }
+        this.myScene.time.delayedCall(650, () => {
+            this.isFiring = true;
+        }, null, this);
+
+        this.myScene.time.delayedCall(1000, () => {
+            this.isFiring = false;
+        }, null, this);
+
+        this.myScene.time.delayedCall(2000 + (Math.random() * 5000), () => {
+            this.play('idle', true);
+        }, null, this);
     }
 }

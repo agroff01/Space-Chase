@@ -6,14 +6,14 @@ class Play extends Phaser.Scene {
     create() {
 
         //background
-        this.starfield = this.add.tileSprite(0,0, game.config.width, game.config.height, 'blueB').setOrigin(0, 0);
-        this.starfield.tilePositionY += 10;
-        this.starfield.alpha = .7;
         this.starfieldParalax1 = this.add.tileSprite(0,0, game.config.width, game.config.height, 'starfieldParalax1').setOrigin(0, 0);
         this.starfieldParalax1.tilePositionY += 100;
         this.starfieldParalax2 = this.add.tileSprite(0,0, game.config.width, game.config.height, 'starfieldParalax2').setOrigin(0, 0);
         this.starfieldParalax2.tilePositionY += 400;
         this.starfieldParalax2.alpha = .3;
+        this.starfield = this.add.tileSprite(0,0, game.config.width, game.config.height, 'blueB').setOrigin(0, 0);
+        this.starfield.tilePositionY += 10;
+        this.starfield.alpha = .7;
        
         //player ship setup
         this.pShip = this.physics.add.sprite(game.config.width/3, game.config.height/2, 'starSpeeder').setOrigin(0.5, 0.5);
@@ -24,16 +24,47 @@ class Play extends Phaser.Scene {
         this.pShip.setCollideWorldBounds(true);
         this.pShip.setMaxVelocity(250, 430);
         this.pShip.setDepth(10);
-        this.pShip.setBounceY(.55);
-        this.pShip.setDrag(500);
+        this.pShip.setBounceY(.3);
+        this.pShip.setDrag(900);
         this.shipDamaged = false;
+        this.pShip.body.onOverlap = true;
         this.SHIP_VELOCITY = 50;
 
-        this.shipLife = 1;
-
+        this.shipLife = 10;
         
+
+        // create animations
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNames('police', {
+                prefix: 'Police Cruzer',
+                start: 1,
+                end: 21
+            }),
+            repeat: -1,
+            frameRate: 8,
+            repeatDelay: 3000
+        });
+        this.anims.create({
+            key: 'fire',
+            frames: this.anims.generateFrameNames('police', {
+                prefix: 'PoliceCruzerFire',
+                start: 1,
+                end: 19
+            }),
+            frameRate: 15
+        });
+
         // Police Instances
-        this.cruzer = new Police(this, 5, game.config.height/2).setOrigin(0);
+        this.cruzers = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        this.cruzers.add(new Police(this, 5, 50).setOrigin(0, .5));
+        this.cruzers.add(new Police(this, 5, game.config.height/2 - 90).setOrigin(0, .5));
+        this.cruzers.add(new Police(this, 5, game.config.height/2).setOrigin(0, .5));
+        this.cruzers.add(new Police(this, 5, game.config.height/2 + 90).setOrigin(0, .5));
+        this.cruzers.add(new Police(this, 5, game.config.height - 50).setOrigin(0, .5));
+
 
         // Asteroid belt objects
         this.rockGroup = this.add.group({
@@ -42,7 +73,12 @@ class Play extends Phaser.Scene {
 
 
         //rock spawner
-        this.rockSpawnDelay = this.time.addEvent({ delay: 1000, callback: () => {this.addMeteor();}, callbackScope: this, loop: true });
+        this.rockSpawnDelay = this.time.addEvent(
+            {   delay: 1000, 
+                callback: () => {this.addMeteor();},
+                callbackScope: this,
+                loop: true 
+            });
 
 
        
@@ -84,7 +120,6 @@ class Play extends Phaser.Scene {
         this.starfield.tilePositionX += this.gameSpeed *.1;
         this.starfieldParalax1.tilePositionX += this.gameSpeed + 1;
         this.starfieldParalax2.tilePositionX += this.gameSpeed/3 + 4;
-        //this.starfieldParalax2.tilePositionY = Math.random() * Math.random() * this.game.config.height;
         this.starfieldParalax2.alpha += this.speedRamp/2;
 
 
@@ -120,8 +155,8 @@ class Play extends Phaser.Scene {
         // if ship is hit
         if (this.shipDamaged) this.pShip.alpha = this.shipInvulnerable.elapsed % 1;
         this.physics.add.collider(this.pShip, this.rockGroup, null, this.shipCollision, this);
+        this.physics.overlap(this.cruzers, this.pShip, null, this.shipLazerOverlap, this);
 
-        
         
     }
 
@@ -139,9 +174,24 @@ class Play extends Phaser.Scene {
         }
         object2.destroy()        
     }
+    
+    shipLazerOverlap(obj1, obj2){
+        if (Math.random() < (.001 * this.timeAlive/20) && obj1.anims.currentAnim.key != 'fire'){
+            obj1.fireLazer();
+        }
+        else if(obj1.isFiring && !this.shipDamaged){
+
+            this.shipLife--;
+            this.livesLeft.text = "Lives Left: " + this.shipLife;
+            this.shipDamaged = true;
+            this.shipInvulnerable = this.time.delayedCall(3000, () => {
+                this.shipDamaged = false;
+                obj2.alpha = 1;
+            }, null, this);
+        }
+    }
 
     addMeteor(){
-        console.log("created");
         let tempMeteor = new Meteor(this, 40);
         this.rockGroup.add(tempMeteor);
         tempMeteor.setAccelerationX(-50 * Math.log(10+ this.timeAlive/100) * (.5 + (Math.random()*1.5)));
