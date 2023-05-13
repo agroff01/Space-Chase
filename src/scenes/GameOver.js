@@ -20,7 +20,7 @@ class GameOver extends Phaser.Scene {
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - 200, 'Game Over!', textConfig).setOrigin(0.5);
         textConfig.fontSize = '30px';
-        this.add.text(game.config.width/2, game.config.height/2, 'Your Highscore is: ' + highScore + ' Light Units', textConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + 30, 'Your Highscore is: ' + highScore + ' Light Units', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + 100, 'Press UP to restart', textConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height - 100, 'Press DOWN for Credits', textConfig).setOrigin(0.5);
 
