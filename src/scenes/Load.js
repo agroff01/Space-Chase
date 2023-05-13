@@ -31,6 +31,15 @@ class Load extends Phaser.Scene {
 
         // load font
         //this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml');
+
+        // load sound
+        this.load.audio('music', ['music.mp3']);
+        this.load.audio('confirm', ['confirm.wav']);
+        this.load.audio('lazerFiring', ['lazerFiring.mp3']);
+        this.load.audio('lazerImpact', ['lazerImpact.mp3']);
+        this.load.audio('meteorImpact', ['meteorImpact.mp3']);
+
+
     }
 
     create() {

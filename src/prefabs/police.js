@@ -31,6 +31,7 @@ class Police extends Phaser.Physics.Arcade.Sprite {
 
     fireLazer(){
         this.play('fire', true);
+        this.myScene.sound.play('lazerFiring', { volume: .7 });
 
         this.myScene.time.delayedCall(650, () => {
             this.isFiring = true;

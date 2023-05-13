@@ -27,13 +27,23 @@ class Menu extends Phaser.Scene {
 
         // define keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+
+        // set up audio
+        this.music = this.sound.add('music', { 
+            mute: false,
+            volume: .4,
+            rate: 1,
+            loop: true 
+        });
+        this.music.play();
         
                 
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyUP)) {          
-          this.scene.start('playScene');    
+        if (Phaser.Input.Keyboard.JustDown(keyUP)) {    
+            this.sound.play('confirm', { volume: 0.5 });
+            this.scene.start('playScene');    
         }
     }
 

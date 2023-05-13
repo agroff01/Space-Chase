@@ -30,7 +30,7 @@ class Play extends Phaser.Scene {
         this.pShip.body.onOverlap = true;
         this.SHIP_VELOCITY = 50;
 
-        this.shipLife = 10;
+        this.shipLife = 3;
         
 
         // create animations
@@ -135,7 +135,7 @@ class Play extends Phaser.Scene {
             this.pShip.body.velocity.x += (this.SHIP_VELOCITY);
         }
         if (this.pShip.x > 625) this.pShip.x = 625;
-        if (this.pShip.x < this.game.config.width/4) this.pShip.x = game.config.width/4;
+        if (this.pShip.x < this.game.config.width/6) this.pShip.x = game.config.width/6;
         this.direction.normalize();
 
         // Check for Failure
@@ -160,7 +160,7 @@ class Play extends Phaser.Scene {
     }
 
     shipCollision(object1, object2) { 
-        
+        this.sound.play('meteorImpact', { volume: 1.2 });
         if (!this.shipDamaged){
             object1.x -= 30;
             this.shipLife--;
@@ -179,7 +179,7 @@ class Play extends Phaser.Scene {
             obj1.fireLazer();
         }
         else if(obj1.isFiring && !this.shipDamaged){
-
+            this.sound.play('lazerImpact', { volume: 0.75, rate: 1.3 });
             this.shipLife--;
             this.livesLeft.text = "Lives Left: " + this.shipLife;
             this.shipDamaged = true;
