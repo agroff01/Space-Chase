@@ -1,3 +1,5 @@
+
+
 let config = {
     type: Phaser.AUTO,
     width: 900,
@@ -8,7 +10,7 @@ let config = {
             debug: false
         }
     },
-    scene: [Load, Menu, Play, GameOver]
+    scene: [Load, Menu, Play, GameOver, Credits]
 }
 
 let game = new Phaser.Game(config);
