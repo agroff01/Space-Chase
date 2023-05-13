@@ -7,7 +7,7 @@ class Menu extends Phaser.Scene {
 
         let menuConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
+            fontSize: '50px',
             backgroundColor: '#F3B141',
             color: '#843605',
             align: 'right',
@@ -20,14 +20,14 @@ class Menu extends Phaser.Scene {
 
 
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - 200, 'Space Chase', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - 150, 'Space Chase', menuConfig).setOrigin(0.5);
+        menuConfig.fontSize = '30px';
         this.add.text(game.config.width/2, game.config.height/2, 'Use arrow keys to move', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + 50, 'Press UP to Begin', menuConfig).setOrigin(0.5);
 
         // define keys
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-        key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
-        key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
+        
                 
     }
 

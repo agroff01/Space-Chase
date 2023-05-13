@@ -54,7 +54,7 @@ class Play extends Phaser.Scene {
         cursors = this.input.keyboard.createCursorKeys();
 
         // Distance Text
-        let menuConfig = {
+        let textUIConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             color: '#FFF',
@@ -65,9 +65,9 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        this.distanceText = this.add.text(game.config.width/2, game.config.height/2 - 200, this.timeAlive, menuConfig).setOrigin(0.5);
+        this.distanceText = this.add.text(game.config.width/2, game.config.height/2 - 200, this.timeAlive, textUIConfig).setOrigin(0.5);
 
-        this.livesLeft = this.add.text(50, 20, "Lives Left: " + this.shipLife, menuConfig).setOrigin(0);
+        this.livesLeft = this.add.text(50, 20, "Lives Left: " + this.shipLife, textUIConfig).setOrigin(0);
     }
 
     update() {

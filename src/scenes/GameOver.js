@@ -5,7 +5,7 @@ class GameOver extends Phaser.Scene {
 
     create() {
 
-        let menuConfig = {
+        let textConfig = {
             fontFamily: 'Courier',
             fontSize: '50px',
             backgroundColor: '#F3B141',
@@ -18,9 +18,9 @@ class GameOver extends Phaser.Scene {
             fixedWidth: 0
         }
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - 200, 'Game Over!', menuConfig).setOrigin(0.5);
-        menuConfig.fontSize = '30px';
-        this.add.text(game.config.width/2, game.config.height/2, 'Press → to restart', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - 200, 'Game Over!', textConfig).setOrigin(0.5);
+        textConfig.fontSize = '30px';
+        this.add.text(game.config.width/2, game.config.height/2, 'Press UP to restart', textConfig).setOrigin(0.5);
 
         // define keys
         cursors = this.input.keyboard.createCursorKeys();
@@ -29,12 +29,10 @@ class GameOver extends Phaser.Scene {
     }
 
     update() {
-        console.log("update started");
-        if ((cursors.right.isDown)) {          
+        if ((cursors.up.isDown)) {          
           this.scene.start('playScene');
         }
 
-        console.log("update finished");
     }
 
 }
