@@ -27,6 +27,7 @@ class Load extends Phaser.Scene {
         this.load.image('meteor2', 'Meteor2.png');
         this.load.image('meteor3', 'Meteor3.png');
         this.load.image('meteor4', 'Meteor4.png');
+        this.load.atlas('police', 'spritesheet.png', 'sprites.json');
 
         // load font
         //this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml');

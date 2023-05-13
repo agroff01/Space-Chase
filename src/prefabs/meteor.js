@@ -1,20 +1,11 @@
 class Meteor extends Phaser.Physics.Arcade.Sprite {
-    // constructor(scene, x, y, texture, frame, speed = 10) {
-    //     super(scene, x, y, texture, frame);
-
-
-    // }
-
-    // update(){
-    //     if (this.y < this.width) this.destroy();
-    // }
-
+   
     constructor(scene, velocity) {
 
         let meteorAssets = ['meteor1', 'meteor2', 'meteor3', 'meteor4'];
-        let meteorName = meteorAssets[Math.floor(Math.random()* meteorAssets.length)];
+        let meteorType = meteorAssets[Math.floor(Math.random()* meteorAssets.length)];
         // call Phaser Physics Sprite constructor
-        super(scene, game.config.width + 40, Phaser.Math.Between(0, game.config.height), meteorName); 
+        super(scene, game.config.width + 40, Phaser.Math.Between(0, game.config.height), meteorType); 
         
         this.parentScene = scene;               // maintain scene context
 

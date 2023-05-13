@@ -24,8 +24,6 @@ class GameOver extends Phaser.Scene {
 
         // define keys
         cursors = this.input.keyboard.createCursorKeys();
-
-        console.log(" death scene finished")        
     }
 
     update() {

@@ -31,6 +31,10 @@ class Play extends Phaser.Scene {
 
         this.shipLife = 1;
 
+        
+        // Police Instances
+        this.cruzer = new Police(this, 5, game.config.height/2).setOrigin(0);
+
         // Asteroid belt objects
         this.rockGroup = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
@@ -79,9 +83,9 @@ class Play extends Phaser.Scene {
 
         this.starfield.tilePositionX += this.gameSpeed *.1;
         this.starfieldParalax1.tilePositionX += this.gameSpeed + 1;
-        this.starfieldParalax2.tilePositionX += this.gameSpeed/2 + 4;
-        this.starfieldParalax2.tilePositionY = Math.random() * this.game.config.height;
-        this.starfieldParalax2.alpha = .03;
+        this.starfieldParalax2.tilePositionX += this.gameSpeed/3 + 4;
+        //this.starfieldParalax2.tilePositionY = Math.random() * Math.random() * this.game.config.height;
+        this.starfieldParalax2.alpha += this.speedRamp/2;
 
 
         // player input
@@ -104,6 +108,10 @@ class Play extends Phaser.Scene {
         if (this.shipLife < 0){
             this.distanceText.destroy();
             this.livesLeft.destroy();
+
+            if (Math.floor(this.timeAlive) > highScore){
+                highScore = Math.floor(this.timeAlive);
+            }
             
             // start next scene
             this.scene.start('gameOver');
