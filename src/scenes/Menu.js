@@ -31,13 +31,14 @@ class Menu extends Phaser.Scene {
         // define keys
         cursors = this.input.keyboard.createCursorKeys();
 
-        
-        this.sound.play('music', { 
-            mute: false,
-            volume: .4,
-            rate: 1,
-            loop: true 
-        });        
+        if (!game.music){
+            game.music = this.sound.play('music', { 
+                mute: false,
+                volume: .4,
+                rate: 1,
+                loop: true 
+            }); 
+        }       
                 
     }
 
@@ -50,6 +51,7 @@ class Menu extends Phaser.Scene {
             this.sound.play('confirm', { volume: 0.7 });     
             this.scene.start('credits');
         }
+        console.log(this.game.music);
     }
 
 }

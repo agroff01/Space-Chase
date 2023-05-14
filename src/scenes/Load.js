@@ -39,7 +39,7 @@ class Load extends Phaser.Scene {
         this.load.audio('lazerImpact', ['lazerImpact.mp3']);
         this.load.audio('meteorImpact', ['meteorImpact.mp3']);
 
-
+        this.game.music = false;
     }
 
     create() {
