@@ -29,11 +29,11 @@ class GameOver extends Phaser.Scene {
     }
 
     update() {
-        if (cursors.up.isDown) {     
+        if (Phaser.Input.Keyboard.JustDown(cursors.up)) {     
             this.sound.play('confirm', { volume: 0.7 });     
             this.scene.start('playScene');
         }
-        if (cursors.down.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(cursors.down)) {
             this.sound.play('confirm', { volume: 0.7 });     
             this.scene.start('credits');
         }

@@ -47,11 +47,10 @@ class Menu extends Phaser.Scene {
             this.sound.play('confirm', { volume: 0.5 });
             this.scene.start('playScene');    
         }
-        if (cursors.down.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(cursors.down)) {
             this.sound.play('confirm', { volume: 0.7 });     
             this.scene.start('credits');
         }
-        console.log(this.game.music);
     }
 
 }
